@@ -1,0 +1,10 @@
+### Registrar usuario
+POST http://localhost:3000/api/registrar
+Content-Type: application/json
+
+{
+  "nombre": "matias",
+  "correo": "matias.barrazah@usm.cl",
+  "clave": "1234",
+  "descripcion": "lindo"
+}
