@@ -178,7 +178,39 @@ app.post('/api/marcarcorreo', async({body})=>{
 
 
 
-app.get
+app.get('/api/informacion/:correo',async ({ params })=>{
+  const{ correo } = params;
+
+  try {
+    const usuario = await prisma.usuario.findUnique({
+      where: { correo },
+      select: {
+        nombre: true,
+        correo: true,
+        descripcion: true,
+      },
+    });
+
+    if(!usuario){
+      return{
+        status: 404,
+        message: 'Usuario no encontrado',
+      };
+    }
+
+    return{
+      status: 200,
+      usuario,
+    };
+  } catch (error){
+    return{
+      status: 500,
+      message:'Error al obtener la informacion del usuario',
+      error: (error as Error).message,
+    }
+  }
+
+});
 
 
 
