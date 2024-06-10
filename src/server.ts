@@ -42,7 +42,7 @@ app.post('/api/registrar', async ({body}) => {
       },
     });
 
-    
+
     return {
       status: 201,
       message: 'Usuario registrado exitosamente',
@@ -116,6 +116,72 @@ app.post('/api/bloquear', async ({body})=>{
       };
   }
 });
+
+
+app.post('/api/marcarcorreo', async({body})=>{
+  const { correo, clave, id_correo_favorito } = await body as {
+    correo: string;
+    clave: string;
+    id_correo_favorito: number;
+  };
+
+  if (!correo || !clave || !id_correo_favorito) {
+    return {
+        status: 400,
+        message: 'Los campos correo, clave y id_correo_favorito son obligatorios.',
+    };
+  }
+
+  try {
+    const usuario = await prisma.usuario.findFirst({
+        where: { correo, clave }
+    });
+
+    if (!usuario) {
+        return {
+            status: 401,
+            message: 'Usuario no encontrado o clave incorrecta.',
+        };
+    }
+
+    const correoExistente = await prisma.correos.findUnique({
+        where: { id: id_correo_favorito }
+    });
+
+    if (!correoExistente) {
+        return {
+            status: 404,
+            message: 'Correo no encontrado.',
+        };
+    }
+
+    const favorito = await prisma.correosFavoritos.create({
+        data: {
+            idUsuario: usuario.id,
+            idCorreo: id_correo_favorito
+        }
+    });
+
+    return {
+        status: 201,
+        message: 'Correo marcado como favorito correctamente',
+        favorito,
+    };
+  } catch (error) {
+      return {
+          status: 500,
+          message: 'Error al marcar correo como favorito',
+          error: (error as Error).message,
+      };
+  }
+});
+
+
+
+app.get
+
+
+
 
 app.listen(3000, () => {
   console.log('Servidor corriendo en http://localhost:3000');
