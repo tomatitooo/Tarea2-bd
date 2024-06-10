@@ -3,8 +3,18 @@ POST http://localhost:3000/api/registrar
 Content-Type: application/json
 
 {
-  "nombre": "matias",
-  "correo": "matias.barrazah@usm.cl",
-  "clave": "1234",
-  "descripcion": "lindo"
+  "nombre": "mariel velizs",
+  "correo": "mariel.vels@usm.cl",
+  "clave": "asd",
+  "descripcion": "kaksada"
+}
+
+### Bloquear usuario
+POST http://localhost:3000/api/bloquear
+Content-Type: application/json
+
+{
+  "correo": "daniel.duenas@usm.cl",
+  "clave": "clavecita1234",
+  "correo_bloquear": "mariel.vel@usm.cl"
 }

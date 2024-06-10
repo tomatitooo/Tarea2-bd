@@ -1,10 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,42 +7,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Usuario {
-  id          Int           @id @default(autoincrement())
-  nombre      String
-  correo      String        @unique
-  clave       String
-  descripcion String?
-  estado      Boolean       @default(true)
-  correos     Correos[]
-  favoritos   CorreosFavoritos[]
-  contactos   Contacto[]    @relation("UsuarioContactos")
-  esContacto  Contacto[]    @relation("ContactoUsuarios")
+  id                    Int                   @id @default(autoincrement())
+  nombre                String
+  correo                String                @unique
+  clave                 String
+  descripcion           String?
+  estado                Boolean               @default(true)
+  correos               Correos[]
+  favoritos             CorreosFavoritos[]
+  direccionesBloqueadas DireccionBloqueada[]
 }
 
 model Correos {
-  id        Int               @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   idUsuario Int
   asunto    String?
   contenido String?
-  fecha     DateTime          @default(now())
-  usuario   Usuario           @relation(fields: [idUsuario], references: [id])
-  favoritos CorreosFavoritos[]
+  fecha     DateTime   @default(now())
+  usuario   Usuario    @relation(fields: [idUsuario], references: [id])
+  favorito  CorreosFavoritos?
 }
 
 model CorreosFavoritos {
   id        Int       @id @default(autoincrement())
   idUsuario Int
-  idCorreo  Int
+  idCorreo  Int       @unique
   usuario   Usuario   @relation(fields: [idUsuario], references: [id])
   correo    Correos   @relation(fields: [idCorreo], references: [id])
 }
 
-model Contacto {
-  id          Int      @id @default(autoincrement())
-  idUsuario   Int
-  idContacto  Int
-  usuario     Usuario  @relation("UsuarioContactos", fields: [idUsuario], references: [id])
-  contacto    Usuario  @relation("ContactoUsuarios", fields: [idContacto], references: [id])
+model DireccionBloqueada {
+  id          Int       @id @default(autoincrement())
+  direccion   String
+  usuarioId   Int
+  usuario     Usuario   @relation(fields: [usuarioId], references: [id])
 }
