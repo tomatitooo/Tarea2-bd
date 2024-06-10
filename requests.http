@@ -16,9 +16,29 @@ Content-Type: application/json
 {
   "correo": "daniel.duenas@usm.cl",
   "clave": "clavecita1234",
-  "correo_bloquear": "mariel.vel@usm.cl"
+  "correo_bloquear": "mariel.vels@usm.cl"
 }
 
 ### Obtener información pública de un usuario
 GET http://localhost:3000/api/informacion/mariel.vels@usm.cl
 Content-Type: application/json
+
+### Marcar correo como favorito
+POST http://localhost:3000/api/marcarcorreo
+Content-Type: application/json
+
+{
+  "correo": "daniel.duenas@usm.cl",
+  "clave": "clavecita1234",
+  "id_correo_favorito": 1
+}
+
+### Desmarcar correo favorito
+DELETE http://localhost:3000/api/desmarcarcorreo
+Content-Type: application/json
+
+{
+  "correo": "daniel.duenas@usm.cl",
+  "clave": "clavecita1234",
+  "id_correo_favorito": 1
+}

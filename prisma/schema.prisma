@@ -30,11 +30,12 @@ model Correos {
 }
 
 model CorreosFavoritos {
-  id        Int       @id @default(autoincrement())
   idUsuario Int
   idCorreo  Int       @unique
   usuario   Usuario   @relation(fields: [idUsuario], references: [id])
   correo    Correos   @relation(fields: [idCorreo], references: [id])
+
+  @@id([idUsuario, idCorreo])
 }
 
 model DireccionBloqueada {

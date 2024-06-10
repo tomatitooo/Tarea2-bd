@@ -176,6 +176,73 @@ app.post('/api/marcarcorreo', async({body})=>{
   }
 });
 
+app.delete('/api/desmarcarcorreo', async({body})=>{
+  const { correo, clave, id_correo_favorito } = await body as {
+    correo: string;
+    clave: string;
+    id_correo_favorito: number;
+  };
+
+  if (!correo || !clave || !id_correo_favorito) {
+    return {
+        status: 400,
+        message: 'Los campos correo, clave y id_correo_favorito son obligatorios.',
+    };
+  }
+
+  try {
+    const usuario = await prisma.usuario.findFirst({
+        where: { correo, clave }
+    });
+
+    if (!usuario) {
+        return {
+            status: 401,
+            message: 'Usuario no encontrado o clave incorrecta.',
+        };
+    }
+
+    const correofavorito = await prisma.correosFavoritos.findUnique({
+        where: { 
+          idUsuario_idCorreo:{
+            idUsuario: usuario.id,
+            idCorreo: id_correo_favorito
+          }
+        }
+    });
+
+    if (!correofavorito) {
+        return {
+            status: 404,
+            message: 'Correo favorito no encontrado.',
+        };
+    }
+
+    await prisma.correosFavoritos.delete({
+      where: {
+        idUsuario_idCorreo: {
+          idUsuario: usuario.id,
+          idCorreo: id_correo_favorito
+        }
+      }
+    })
+
+    return {
+        status: 200,
+        message: 'Correo desmarcado como favorito correctamente',
+    };
+  } catch (error) {
+      return {
+          status: 500,
+          message: 'Error al marcar correo como favorito',
+          error: (error as Error).message,
+      };
+  }
+});
+
+
+
+
 
 
 app.get('/api/informacion/:correo',async ({ params })=>{
@@ -211,7 +278,6 @@ app.get('/api/informacion/:correo',async ({ params })=>{
   }
 
 });
-
 
 
 
