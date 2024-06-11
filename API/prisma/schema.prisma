@@ -13,21 +13,24 @@ model Usuario {
   correo                String                @unique
   clave                 String
   descripcion           String?
-  estado                Boolean               @default(true)
-  correos               Correos[]
+  correosEnviados       Correos[]             @relation("CorreosEnviados")
+  correosRecibidos      Correos[]             @relation("CorreosRecibidos")
   favoritos             CorreosFavoritos[]
   direccionesBloqueadas DireccionBloqueada[]
 }
 
 model Correos {
-  id        Int        @id @default(autoincrement())
-  idUsuario Int
-  asunto    String?
-  contenido String?
-  fecha     DateTime   @default(now())
-  usuario   Usuario    @relation(fields: [idUsuario], references: [id])
-  favorito  CorreosFavoritos?
+  id            Int        @id @default(autoincrement())
+  idRemitente   Int
+  idDestinatario Int
+  asunto        String?
+  contenido     String?
+  fecha         DateTime   @default(now())
+  remitente     Usuario    @relation("CorreosEnviados", fields: [idRemitente], references: [id])
+  destinatario  Usuario    @relation("CorreosRecibidos", fields: [idDestinatario], references: [id])
+  favorito      CorreosFavoritos?
 }
+
 
 model CorreosFavoritos {
   idUsuario Int

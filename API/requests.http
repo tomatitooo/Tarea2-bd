@@ -3,9 +3,9 @@ POST http://localhost:3000/api/registrar
 Content-Type: application/json
 
 {
-  "nombre": "mariel velizs",
-  "correo": "mariel.vels@usm.cl",
-  "clave": "asd",
+  "nombre": "joaquin proboste",
+  "correo": "joaquin.proboste@usm.cl",
+  "clave": "1234",
   "descripcion": "kaksada"
 }
 
@@ -28,7 +28,7 @@ POST http://localhost:3000/api/marcarcorreo
 Content-Type: application/json
 
 {
-  "correo": "daniel.duenas@usm.cl",
+  "correo": "matias.barr",
   "clave": "clavecita1234",
   "id_correo_favorito": 1
 }
