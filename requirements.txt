@@ -1,0 +1,18 @@
+Powershell en el archivo padre.
+
+powershell -c "irm bun.sh/install.ps1 | iex" 
+npm install @prisma/client
+npm install @prisma/client prisma
+reset
+bun install
+pip install requests
+cd API
+npx prisma migrate dev --name init
+npx prisma generate
+bun run src/server.ts
+
+
+OTRA POWERSHELL en el archivo padre.
+
+cd Cliente
+py CLI.py
